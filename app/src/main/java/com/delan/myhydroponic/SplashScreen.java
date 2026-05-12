@@ -19,6 +19,9 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splashscreen);
 
+        getWindow().setNavigationBarColor(
+                getResources().getColor(R.color.white));
+
         // ambil logo
         ImageView logo = findViewById(R.id.logo_image);
 

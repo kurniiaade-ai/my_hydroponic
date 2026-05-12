@@ -1,24 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.MyHydroponic" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <!-- Warna utama -->
-        <item name="colorPrimary">@color/green_app</item>
-
-        <!-- Status bar (bagian atas HP) -->
-        <item name="android:statusBarColor">@color/green_app</item>
-
-        <!-- Biar icon status bar kelihatan -->
-        <item name="android:windowLightStatusBar">true</item>
-
-    </style>
 
     <style name="Theme.Splash" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:statusBarColor">@color/white</item>
-    </style>
-
-    <style name="Theme.login" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:statusBarColor">@color/white</item>
     </style>
 

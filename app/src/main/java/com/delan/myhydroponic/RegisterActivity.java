@@ -30,6 +30,20 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        getWindow().setNavigationBarColor(
+                getResources().getColor(R.color.white));
+
+        getWindow().setStatusBarColor(
+                getResources().getColor(R.color.white));
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+            getWindow().getDecorView().setSystemUiVisibility(
+                    android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                            | android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            );
+        }
+
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
