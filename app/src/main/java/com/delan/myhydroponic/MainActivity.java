@@ -73,6 +73,13 @@ public class MainActivity extends AppCompatActivity {
         // Binding Navigation & Profile
         imgProfileTop = findViewById(R.id.imgProfileTop);
         navProfil = findViewById(R.id.navProfil);
+        navTanaman = findViewById(R.id.navTanaman);
+
+        // Listener untuk pindah ke DaftarTanamanActivity
+        navTanaman.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, DaftarTanamanActivity.class);
+            startActivity(intent);
+        });
 
         imgProfileTop.setOnClickListener(v -> performLogout());
         navProfil.setOnClickListener(v -> performLogout());

@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_navigation"
-        android:padding="16dp"
+        android:padding="4dp"
+        android:scrollbars="none"
         android:clipToPadding="false"
         android:paddingBottom="24dp">
 
@@ -24,7 +25,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp">
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="4dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -60,15 +62,6 @@
                     <ImageView android:id="@+id/imgProfileTop" android:layout_width="28dp" android:layout_height="28dp" android:src="@android:drawable/ic_menu_myplaces" app:tint="@color/text_gray" />
                 </LinearLayout>
             </RelativeLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="DASHBOARD"
-                android:textColor="@color/text_dark"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="16dp"/>
 
             <!-- SENSOR CARDS (3 Kolom - 3D Effect) -->
             <LinearLayout
@@ -107,7 +100,7 @@
                             android:id="@+id/iconTemp"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@android:drawable/ic_menu_info_details"
+                            android:src="@drawable/temp"
                             app:tint="@color/text_gray"
                             android:layout_marginBottom="4dp"/>
 
@@ -163,7 +156,15 @@
                         android:orientation="vertical"
                         android:padding="12dp"
                         android:gravity="center">
-                        <ImageView android:id="@+id/iconAki" android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_lock_idle_charging" app:tint="@color/text_gray" android:layout_marginBottom="4dp"/>
+
+                        <ImageView
+                            android:id="@+id/iconAki"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/aki"
+                            app:tint="@color/text_gray"
+                            android:layout_marginBottom="4dp"/>
+
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Daya Aki" android:textColor="@color/text_gray" android:textSize="10sp"/>
                         <TextView android:id="@+id/txtAki" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="85%" android:textColor="@color/text_dark" android:textSize="16sp" android:textStyle="bold" android:layout_marginTop="2dp"/>
                     </LinearLayout>
@@ -174,8 +175,9 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="8dp"
@@ -224,15 +226,17 @@
                 android:textColor="@color/text_dark"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="10dp"/>
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="none"
-                android:layout_marginBottom="24dp"
                 android:clipToPadding="false"
-                android:paddingBottom="8dp">
+                android:layout_marginRight="4dp"
+                android:paddingBottom="12dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -242,11 +246,12 @@
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="180dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
-                        android:layout_margin="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="6dp"
                         app:cardBackgroundColor="@color/white"
                         app:cardCornerRadius="16dp"
-                        app:cardElevation="4dp">
+                        app:cardElevation="2dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -265,9 +270,12 @@
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="180dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="6dp"
                         app:cardBackgroundColor="@color/white"
                         app:cardCornerRadius="16dp"
-                        app:cardElevation="6dp">
+                        app:cardElevation="4dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -293,15 +301,21 @@
                 android:textColor="@color/text_dark"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="10dp"/>
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cvNotif"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="16dp"
                 android:padding="8dp"
-                app:cardElevation="8dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="16dp"
+                app:cardElevation="6dp"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
@@ -323,6 +337,14 @@
                     </RelativeLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/loyalty"
+                android:textColor="@color/text_gray"
+                android:textSize="10sp"
+                android:layout_gravity="center_horizontal"/>
         </LinearLayout>
     </ScrollView>
 

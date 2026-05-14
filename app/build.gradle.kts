@@ -53,4 +53,10 @@ dependencies {
 
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
+
+    // Library untuk FirebaseUI Database (Menangani Adapter otomatis)
+    implementation ("com.firebaseui:firebase-ui-database:8.0.2")
+
+    // Pastikan library database standar juga ada
+    implementation ("com.google.firebase:firebase-database:20.3.0")
     }
