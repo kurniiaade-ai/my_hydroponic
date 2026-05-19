@@ -1,354 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_light">
 
-    <!-- MAIN SCROLLABLE CONTENT -->
-    <ScrollView
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_navigation"
-        android:padding="4dp"
-        android:scrollbars="none"
-        android:clipToPadding="false"
-        android:paddingBottom="24dp">
+        android:layout_above="@+id/bottom_navigation" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <!-- HEADER -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="4dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_centerVertical="true">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@android:drawable/ic_menu_gallery"
-                        app:tint="@color/glow_temp"
-                        android:layout_marginEnd="8dp"/>
-
-                    <TextView android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Hidroponik-Ku"
-                        android:textColor="@color/text_dark"
-                        android:textSize="20sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_alignParentEnd="true"
-                    android:gravity="center_vertical">
-
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_menu_call" app:tint="@color/glow_temp" android:layout_marginEnd="12dp"/>
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_popup_reminder" app:tint="@color/text_gray" android:layout_marginEnd="12dp"/>
-                    <ImageView android:id="@+id/imgProfileTop" android:layout_width="28dp" android:layout_height="28dp" android:src="@android:drawable/ic_menu_myplaces" app:tint="@color/text_gray" />
-                </LinearLayout>
-            </RelativeLayout>
-
-            <!-- SENSOR CARDS (3 Kolom - 3D Effect) -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="10dp"
-                android:padding="8dp"
-                android:weightSum="3"
-                android:clipChildren="false"
-                android:clipToPadding="false">
-
-                <!-- Card Suhu -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardTemp"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginVertical="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="8dp"
-                    app:strokeWidth="0dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="12dp"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:id="@+id/iconTemp"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/temp"
-                            app:tint="@color/text_gray"
-                            android:layout_marginBottom="4dp"/>
-
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Suhu Air" android:textColor="@color/text_gray" android:textSize="10sp"/>
-                        <TextView android:id="@+id/txtWaterTemp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="23.5°C" android:textColor="@color/text_dark" android:textSize="16sp" android:textStyle="bold" android:layout_marginTop="2dp"/>
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Card Nutrisi -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardTds"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginVertical="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="8dp"
-                    app:strokeWidth="0dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="12dp"
-                        android:gravity="center">
-                        <ImageView android:id="@+id/iconTds" android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_preferences" app:tint="@color/text_gray" android:layout_marginBottom="4dp"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Nutrisi" android:textColor="@color/text_gray" android:textSize="10sp"/>
-                        <TextView android:id="@+id/txtTds" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1350 PPM" android:textColor="@color/text_dark" android:textSize="16sp" android:textStyle="bold" android:layout_marginTop="2dp"/>
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Card Aki -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardAki"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginVertical="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="8dp"
-                    app:strokeWidth="0dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="12dp"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:id="@+id/iconAki"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/aki"
-                            app:tint="@color/text_gray"
-                            android:layout_marginBottom="4dp"/>
-
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Daya Aki" android:textColor="@color/text_gray" android:textSize="10sp"/>
-                        <TextView android:id="@+id/txtAki" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="85%" android:textColor="@color/text_dark" android:textSize="16sp" android:textStyle="bold" android:layout_marginTop="2dp"/>
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-            </LinearLayout>
-
-            <!-- CHART SECTION -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="8dp"
-                app:strokeWidth="0dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Tren Data"
-                            android:textColor="@color/text_dark"
-                            android:textSize="14sp"
-                            android:textStyle="bold"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:text="7 Hari Terakhir ⌄"
-                            android:textColor="@color/text_gray"
-                            android:textSize="12sp"/>
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:layout_marginTop="16dp"
-                        android:background="@color/bg_light"/>
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- DAFTAR TANAMAN HORIZONTAL -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="DAFTAR TANAMAN SAAT INI"
-                android:textColor="@color/text_dark"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="12dp"
-                android:layout_marginLeft="10dp"/>
-
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="none"
-                android:clipToPadding="false"
-                android:layout_marginRight="4dp"
-                android:paddingBottom="12dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="180dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="6dp"
-                        app:cardBackgroundColor="@color/white"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="2dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:padding="12dp"
-                            android:gravity="center_vertical">
-                            <ImageView android:layout_width="40dp" android:layout_height="40dp" android:background="#81C784" android:layout_marginEnd="12dp"/>
-                            <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical">
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Selada" android:textColor="@color/text_dark" android:textSize="14sp" android:textStyle="bold"/>
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Bibit • Hari 10" android:textColor="@color/text_gray" android:textSize="11sp"/>
-                            </LinearLayout>
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="180dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="6dp"
-                        app:cardBackgroundColor="@color/white"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="4dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:padding="12dp"
-                            android:gravity="center_vertical">
-                            <ImageView android:layout_width="40dp" android:layout_height="40dp" android:background="#4DB6AC" android:layout_marginEnd="12dp"/>
-                            <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical">
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Peppermint" android:textColor="@color/text_dark" android:textSize="14sp" android:textStyle="bold"/>
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Vegetatif • Hari 25" android:textColor="@color/text_gray" android:textSize="11sp"/>
-                            </LinearLayout>
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-                </LinearLayout>
-            </HorizontalScrollView>
-
-            <!-- NOTIFICATION LOG -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="LOG SISTEM"
-                android:textColor="@color/text_dark"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="12dp"
-                android:layout_marginLeft="10dp"/>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cvNotif"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="16dp"
-                android:padding="8dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="16dp"
-                app:cardElevation="6dp"
-                app:strokeWidth="0dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp">
-                        <ImageView android:id="@+id/iconAlert" android:layout_width="16dp" android:layout_height="16dp" android:src="@android:drawable/ic_dialog_alert" app:tint="@color/alert_red" android:layout_centerVertical="true"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Suhu Tinggi (26.5°C)" android:textColor="@color/text_dark" android:textSize="12sp" android:layout_toEndOf="@id/iconAlert" android:layout_marginStart="8dp" android:layout_centerVertical="true"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="14:32" android:textColor="@color/text_gray" android:textSize="10sp" android:layout_alignParentEnd="true" android:layout_centerVertical="true"/>
-                    </RelativeLayout>
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border_light" android:layout_marginBottom="12dp"/>
-                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
-                        <ImageView android:id="@+id/iconCheck" android:layout_width="16dp" android:layout_height="16dp" android:src="@android:drawable/checkbox_on_background" app:tint="@color/glow_temp" android:layout_centerVertical="true"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Lampu Grow Light Aktif" android:textColor="@color/text_dark" android:textSize="12sp" android:layout_toEndOf="@id/iconCheck" android:layout_marginStart="8dp" android:layout_centerVertical="true"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="14:15" android:textColor="@color/text_gray" android:textSize="10sp" android:layout_alignParentEnd="true" android:layout_centerVertical="true"/>
-                    </RelativeLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/loyalty"
-                android:textColor="@color/text_gray"
-                android:textSize="10sp"
-                android:layout_gravity="center_horizontal"/>
-        </LinearLayout>
-    </ScrollView>
-
-    <!-- CUSTOM BOTTOM NAVIGATION -->
     <LinearLayout
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -360,20 +22,24 @@
         android:elevation="16dp">
 
         <LinearLayout android:id="@+id/navDashboard" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:background="?attr/selectableItemBackground">
-            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_gallery" app:tint="@color/glow_temp"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Dashboard" android:textColor="@color/glow_temp" android:textSize="10sp" android:layout_marginTop="2dp" android:textStyle="bold"/>
+            <ImageView android:id="@+id/imgDashboard" android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_gallery" app:tint="@color/glow_temp"/>
+            <TextView android:id="@+id/txtDashboard" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Dashboard" android:textColor="@color/glow_temp" android:textSize="10sp" android:layout_marginTop="2dp" android:textStyle="bold"/>
         </LinearLayout>
+
         <LinearLayout android:id="@+id/navTanaman" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:background="?attr/selectableItemBackground">
-            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_view" app:tint="@color/text_gray"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tanaman" android:textColor="@color/text_gray" android:textSize="10sp" android:layout_marginTop="2dp"/>
+            <ImageView android:id="@+id/imgTanaman" android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_view" app:tint="@color/text_gray"/>
+            <TextView android:id="@+id/txtTanaman" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tanaman" android:textColor="@color/text_gray" android:textSize="10sp" android:layout_marginTop="2dp"/>
         </LinearLayout>
+
         <LinearLayout android:id="@+id/navLog" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:background="?attr/selectableItemBackground">
-            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_sort_by_size" app:tint="@color/text_gray"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Log" android:textColor="@color/text_gray" android:textSize="10sp" android:layout_marginTop="2dp"/>
+            <ImageView android:id="@+id/imgLog" android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_sort_by_size" app:tint="@color/text_gray"/>
+            <TextView android:id="@+id/txtLog" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Log" android:textColor="@color/text_gray" android:textSize="10sp" android:layout_marginTop="2dp"/>
         </LinearLayout>
+
         <LinearLayout android:id="@+id/navProfil" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:background="?attr/selectableItemBackground">
-            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_myplaces" app:tint="@color/text_gray"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Profil" android:textColor="@color/text_gray" android:textSize="10sp" android:layout_marginTop="2dp"/>
+            <ImageView android:id="@+id/imgProfil" android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_myplaces" app:tint="@color/text_gray"/>
+            <TextView android:id="@+id/txtProfil" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Profil" android:textColor="@color/text_gray" android:textSize="10sp" android:layout_marginTop="2dp"/>
         </LinearLayout>
     </LinearLayout>
+
 </RelativeLayout>

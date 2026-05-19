@@ -37,8 +37,8 @@
         <activity android:name=".MainActivity"
                   android:theme="@style/Theme.MyHydroponic"/>
 
-        <activity android:name=".DaftarTanamanActivity"
-                  android:exported="false" />
+        <activity android:name=".TambahTanamanActivity"
+                  android:exported="false"/>
 
     </application>
 

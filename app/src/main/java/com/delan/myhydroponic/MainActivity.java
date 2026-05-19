@@ -1,37 +1,27 @@
 package com.delan.myhydroponic;
 
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-
-import com.google.android.material.card.MaterialCardView;
-import com.google.firebase.auth.FirebaseAuth;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity {
 
-    // View Components Sensor
-    TextView txtWaterTemp, txtTds, txtAki;
-
-    // Cards & Icons untuk Efek Glow
-    MaterialCardView cardTemp, cardTds, cardAki;
-    ImageView iconTemp, iconTds, iconAki;
-
-    // Bottom Nav & Profile
-    LinearLayout navDashboard, navTanaman, navLog, navProfil;
-    ImageView imgProfileTop;
-
-    FirebaseAuth mAuth;
+    private LinearLayout navDashboard, navTanaman, navLog, navProfil;
+    private ImageView imgDashboard, imgTanaman, imgLog, imgProfil;
+    private TextView txtDashboard, txtTanaman, txtLog, txtProfil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,128 +34,84 @@ public class MainActivity extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.bg_light));
         window.setNavigationBarColor(Color.WHITE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            window.getDecorView().setSystemUiVisibility(android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
         }
 
-        mAuth = FirebaseAuth.getInstance();
-
-        // Binding Sensor Texts
-        txtWaterTemp = findViewById(R.id.txtWaterTemp);
-        txtTds = findViewById(R.id.txtTds);
-        txtAki = findViewById(R.id.txtAki);
-
-        // Binding Cards & Icons
-        cardTemp = findViewById(R.id.cardTemp);
-        cardTds = findViewById(R.id.cardTds);
-        cardAki = findViewById(R.id.cardAki);
-        iconTemp = findViewById(R.id.iconTemp);
-        iconTds = findViewById(R.id.iconTds);
-        iconAki = findViewById(R.id.iconAki);
-
-        // --- LOGIKA KLIK KARTU (GLOW EFFECT) ---
-        cardTemp.setOnClickListener(v -> highlightCard("TEMP"));
-        cardTds.setOnClickListener(v -> highlightCard("TDS"));
-        cardAki.setOnClickListener(v -> highlightCard("AKI"));
-
-        // Set Default Sorotan Pertama
-        highlightCard("TDS"); // Misalnya TDS disorot secara default
-
-        // Binding Navigation & Profile
-        imgProfileTop = findViewById(R.id.imgProfileTop);
-        navProfil = findViewById(R.id.navProfil);
+        // Binding Komponen Navigasi
+        navDashboard = findViewById(R.id.navDashboard);
         navTanaman = findViewById(R.id.navTanaman);
+        navLog = findViewById(R.id.navLog);
+        navProfil = findViewById(R.id.navProfil);
 
-        // Listener untuk pindah ke DaftarTanamanActivity
-        navTanaman.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, DaftarTanamanActivity.class);
-            startActivity(intent);
-        });
+        imgDashboard = findViewById(R.id.imgDashboard);
+        imgTanaman = findViewById(R.id.imgTanaman);
+        imgLog = findViewById(R.id.imgLog);
+        imgProfil = findViewById(R.id.imgProfil);
 
-        imgProfileTop.setOnClickListener(v -> performLogout());
-        navProfil.setOnClickListener(v -> performLogout());
-    }
+        txtDashboard = findViewById(R.id.txtDashboard);
+        txtTanaman = findViewById(R.id.txtTanaman);
+        txtLog = findViewById(R.id.txtLog);
+        txtProfil = findViewById(R.id.txtProfil);
 
-    // FUNGSI UNTUK MENGUBAH EFEK GLOW PADA CARD
-    private void highlightCard(String selectedCard) {
-        // 1. Reset semua kartu ke tampilan default (Abu-abu, tidak nyala)
-        resetAllCards();
+        // Klik Menu untuk ganti konten atas
+        navDashboard.setOnClickListener(v -> loadFragment(new DashboardFragment(), "DASHBOARD"));
+        navTanaman.setOnClickListener(v -> loadFragment(new TanamanFragment(), "TANAMAN"));
+        //navLog.setOnClickListener(v -> loadFragment(new LogFragment(), "LOG"));
+        //navProfil.setOnClickListener(v -> loadFragment(new ProfilFragment(), "PROFIL"));
 
-        // 2. Set efek menyala pada kartu yang dipilih
-        int glowColor = 0;
-        MaterialCardView activeCard = null;
-        ImageView activeIcon = null;
-
-        if (selectedCard.equals("TEMP")) {
-            activeCard = cardTemp;
-            activeIcon = iconTemp;
-            glowColor = ContextCompat.getColor(this, R.color.glow_temp);
-        } else if (selectedCard.equals("TDS")) {
-            activeCard = cardTds;
-            activeIcon = iconTds;
-            glowColor = ContextCompat.getColor(this, R.color.glow_tds);
-        } else if (selectedCard.equals("AKI")) {
-            activeCard = cardAki;
-            activeIcon = iconAki;
-            glowColor = ContextCompat.getColor(this, R.color.glow_aki);
-        }
-
-        if (activeCard != null) {
-            // Beri garis tepi berwarna
-            activeCard.setStrokeWidth(5); // Ketebalan garis
-            activeCard.setStrokeColor(glowColor);
-
-            // Angkat kartu sedikit lebih tinggi
-            activeCard.setCardElevation(20f);
-
-            // Ubah warna ikon
-            activeIcon.setImageTintList(ColorStateList.valueOf(glowColor));
-
-            // Efek cahaya bayangan (Glow) untuk Android 9+ (Pie)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                activeCard.setOutlineSpotShadowColor(glowColor);
-                activeCard.setOutlineAmbientShadowColor(glowColor);
-            }
+        // Default awal saat pertama kali buka aplikasi
+        if (savedInstanceState == null) {
+            loadFragment(new DashboardFragment(), "DASHBOARD");
         }
     }
 
-    private void resetAllCards() {
-        int defaultIconColor = ContextCompat.getColor(this, R.color.text_gray);
+    private void loadFragment(Fragment fragment, String menuTag) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
 
-        // Reset Suhu
-        cardTemp.setStrokeWidth(0);
-        cardTemp.setCardElevation(8f);
-        iconTemp.setImageTintList(ColorStateList.valueOf(defaultIconColor));
+        resetNavColors();
 
-        // Reset Nutrisi
-        cardTds.setStrokeWidth(0);
-        cardTds.setCardElevation(8f);
-        iconTds.setImageTintList(ColorStateList.valueOf(defaultIconColor));
-
-        // Reset Aki
-        cardAki.setStrokeWidth(0);
-        cardAki.setCardElevation(8f);
-        iconAki.setImageTintList(ColorStateList.valueOf(defaultIconColor));
-
-        // Kembalikan warna shadow ke default (Hitam/Abu) untuk Android 9+
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            int defaultShadow = Color.BLACK;
-            cardTemp.setOutlineSpotShadowColor(defaultShadow);
-            cardTemp.setOutlineAmbientShadowColor(defaultShadow);
-            cardTds.setOutlineSpotShadowColor(defaultShadow);
-            cardTds.setOutlineAmbientShadowColor(defaultShadow);
-            cardAki.setOutlineSpotShadowColor(defaultShadow);
-            cardAki.setOutlineAmbientShadowColor(defaultShadow);
+        int activeColor = ContextCompat.getColor(this, R.color.glow_temp);
+        if (menuTag.equals("DASHBOARD")) {
+            imgDashboard.setImageTintList(ColorStateList.valueOf(activeColor));
+            txtDashboard.setTextColor(activeColor);
+        } else if (menuTag.equals("TANAMAN")) {
+            imgTanaman.setImageTintList(ColorStateList.valueOf(activeColor));
+            txtTanaman.setTextColor(activeColor);
+        } else if (menuTag.equals("LOG")) {
+            imgLog.setImageTintList(ColorStateList.valueOf(activeColor));
+            txtLog.setTextColor(activeColor);
+        } else if (menuTag.equals("PROFIL")) {
+            imgProfil.setImageTintList(ColorStateList.valueOf(activeColor));
+            txtProfil.setTextColor(activeColor);
         }
     }
 
-    private void performLogout() {
-        if (mAuth != null) {
-            mAuth.signOut();
-            Toast.makeText(this, "Logout berhasil", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
+    private void resetNavColors() {
+        int inactiveColor = ContextCompat.getColor(this, R.color.text_gray);
+
+        imgDashboard.setImageTintList(ColorStateList.valueOf(inactiveColor));
+        txtDashboard.setTextColor(inactiveColor);
+        imgTanaman.setImageTintList(ColorStateList.valueOf(inactiveColor));
+        txtTanaman.setTextColor(inactiveColor);
+        imgLog.setImageTintList(ColorStateList.valueOf(inactiveColor));
+        txtLog.setTextColor(inactiveColor);
+        imgProfil.setImageTintList(ColorStateList.valueOf(inactiveColor));
+        txtProfil.setTextColor(inactiveColor);
+    }
+
+    // ViewHolder untuk list ringkas horizontal di Dashboard Fragment
+    public static class DashTanamanViewHolder extends RecyclerView.ViewHolder {
+        public TextView tvNama, tvDetail;
+        public ImageView imgTanaman;
+
+        public DashTanamanViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvNama = itemView.findViewById(R.id.tvNamaDash);
+            tvDetail = itemView.findViewById(R.id.tvDetailDash);
+            imgTanaman = itemView.findViewById(R.id.imgTanamanDash);
         }
     }
 }
