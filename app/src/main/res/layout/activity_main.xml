@@ -15,8 +15,8 @@
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white"
+        android:layout_above="@+id/layout_identitas"
+        android:background="#FFFFFF"
         android:orientation="horizontal"
         android:weightSum="4"
         android:elevation="16dp">
@@ -31,15 +31,37 @@
             <TextView android:id="@+id/txtTanaman" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tanaman" android:textColor="@color/text_gray" android:textSize="10sp" android:layout_marginTop="2dp"/>
         </LinearLayout>
 
+        <LinearLayout android:id="@+id/navMonitoring" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:background="?attr/selectableItemBackground">
+            <ImageView android:id="@+id/imgMonitoring" android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_myplaces" app:tint="@color/text_gray"/>
+            <TextView android:id="@+id/txtMonitoring" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Monitoring" android:textColor="@color/text_gray" android:textSize="10sp" android:layout_marginTop="2dp"/>
+        </LinearLayout>
+
         <LinearLayout android:id="@+id/navLog" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:background="?attr/selectableItemBackground">
             <ImageView android:id="@+id/imgLog" android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_sort_by_size" app:tint="@color/text_gray"/>
             <TextView android:id="@+id/txtLog" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Log" android:textColor="@color/text_gray" android:textSize="10sp" android:layout_marginTop="2dp"/>
         </LinearLayout>
+    </LinearLayout>
 
-        <LinearLayout android:id="@+id/navProfil" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:background="?attr/selectableItemBackground">
-            <ImageView android:id="@+id/imgProfil" android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_myplaces" app:tint="@color/text_gray"/>
-            <TextView android:id="@+id/txtProfil" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Profil" android:textColor="@color/text_gray" android:textSize="10sp" android:layout_marginTop="2dp"/>
-        </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_identitas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#FFFFFF"
+        android:paddingTop="2dp"
+        android:paddingBottom="8dp"
+        android:gravity="center"
+        android:elevation="16dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtBranding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Powered by Ade Kurnia Puji Pangestu"
+            android:textColor="@color/text_gray"
+            android:textSize="9sp"
+            android:textStyle="italic|bold"/>
     </LinearLayout>
 
 </RelativeLayout>

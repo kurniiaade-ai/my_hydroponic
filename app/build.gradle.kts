@@ -59,4 +59,7 @@ dependencies {
 
     // Pastikan library database standar juga ada
     implementation ("com.google.firebase:firebase-database:20.3.0")
+
+    // Library chart
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
     }

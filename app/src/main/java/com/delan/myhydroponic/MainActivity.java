@@ -1,117 +1,129 @@
 package com.delan.myhydroponic;
 
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.os.Build;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private LinearLayout navDashboard, navTanaman, navLog, navProfil;
-    private ImageView imgDashboard, imgTanaman, imgLog, imgProfil;
-    private TextView txtDashboard, txtTanaman, txtLog, txtProfil;
+    // Deklarasi variabel menu navigasi baru
+    private LinearLayout navDashboard, navTanaman, navMonitoring, navLog;
+    private ImageView imgDashboard, imgTanaman, imgMonitoring, imgLog;
+    private TextView txtDashboard, txtTanaman, txtMonitoring, txtLog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // --- SETTING STATUS BAR WHITE THEME ---
-        Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.bg_light));
-        window.setNavigationBarColor(Color.WHITE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
-        }
-
-        // Binding Komponen Navigasi
+        // Binding ID Layout Komponen
         navDashboard = findViewById(R.id.navDashboard);
         navTanaman = findViewById(R.id.navTanaman);
+        navMonitoring = findViewById(R.id.navMonitoring); // Mengganti Profil
         navLog = findViewById(R.id.navLog);
-        navProfil = findViewById(R.id.navProfil);
 
         imgDashboard = findViewById(R.id.imgDashboard);
         imgTanaman = findViewById(R.id.imgTanaman);
+        imgMonitoring = findViewById(R.id.imgMonitoring); // Mengganti Profil
         imgLog = findViewById(R.id.imgLog);
-        imgProfil = findViewById(R.id.imgProfil);
 
         txtDashboard = findViewById(R.id.txtDashboard);
         txtTanaman = findViewById(R.id.txtTanaman);
+        txtMonitoring = findViewById(R.id.txtMonitoring); // Mengganti Profil
         txtLog = findViewById(R.id.txtLog);
-        txtProfil = findViewById(R.id.txtProfil);
 
-        // Klik Menu untuk ganti konten atas
-        navDashboard.setOnClickListener(v -> loadFragment(new DashboardFragment(), "DASHBOARD"));
-        navTanaman.setOnClickListener(v -> loadFragment(new TanamanFragment(), "TANAMAN"));
-        //navLog.setOnClickListener(v -> loadFragment(new LogFragment(), "LOG"));
-        //navProfil.setOnClickListener(v -> loadFragment(new ProfilFragment(), "PROFIL"));
-
-        // Default awal saat pertama kali buka aplikasi
+        // Halaman Utama Default saat aplikasi dibuka
         if (savedInstanceState == null) {
-            loadFragment(new DashboardFragment(), "DASHBOARD");
+            pilihMenu("DASHBOARD");
+        }
+
+        // Action Click Listener
+        navDashboard.setOnClickListener(v -> pilihMenu("DASHBOARD"));
+        navTanaman.setOnClickListener(v -> pilihMenu("TANAMAN"));
+        navMonitoring.setOnClickListener(v -> pilihMenu("MONITORING"));
+        navLog.setOnClickListener(v -> pilihMenu("LOG"));
+    }
+
+    /**
+     * Fungsi Router Navigasi & Highlight Warna Komponen Menu Aktif
+     */
+    private void pilihMenu(String menu) {
+        // Reset seluruh warna menu menjadi default (Abu-abu)
+        resetWarnaMenu();
+
+        Fragment selectedFragment = null;
+        int warnaAktif = ContextCompat.getColor(this, R.color.glow_temp);
+
+        switch (menu) {
+            case "DASHBOARD":
+                imgDashboard.setColorFilter(warnaAktif);
+                txtDashboard.setTextColor(warnaAktif);
+                txtDashboard.setTypeface(null, Typeface.BOLD);
+                selectedFragment = new DashboardFragment();
+                break;
+            case "TANAMAN":
+                imgTanaman.setColorFilter(warnaAktif);
+                txtTanaman.setTextColor(warnaAktif);
+                txtTanaman.setTypeface(null, Typeface.BOLD);
+                selectedFragment = new TanamanFragment();
+                break;
+            case "MONITORING":
+                imgMonitoring.setColorFilter(warnaAktif);
+                txtMonitoring.setTextColor(warnaAktif);
+                txtMonitoring.setTypeface(null, Typeface.BOLD);
+                // selectedFragment = new MonitoringFragment(); // Lepas komentar jika fragment sudah dibuat
+                Toast.makeText(this, "Halaman Monitoring sedang disiapkan", Toast.LENGTH_SHORT).show();
+                break;
+            case "LOG":
+                imgLog.setColorFilter(warnaAktif);
+                txtLog.setTextColor(warnaAktif);
+                txtLog.setTypeface(null, Typeface.BOLD);
+                // selectedFragment = new LogFragment(); // Lepas komentar jika fragment sudah dibuat
+                Toast.makeText(this, "Halaman Log belum tersedia", Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+        // Eksekusi pemuatan fragmen halaman
+        if (selectedFragment != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, selectedFragment)
+                    .commit();
         }
     }
 
-    private void loadFragment(Fragment fragment, String menuTag) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit();
+    /**
+     * Setel ulang status visual warna menu ke kondisi pasif (Abu-abu)
+     */
+    private void resetWarnaMenu() {
+        int warnaDefault = ContextCompat.getColor(this, R.color.text_gray);
 
-        resetNavColors();
+        imgDashboard.setColorFilter(warnaDefault);
+        imgTanaman.setColorFilter(warnaDefault);
+        imgMonitoring.setColorFilter(warnaDefault);
+        imgLog.setColorFilter(warnaDefault);
 
-        int activeColor = ContextCompat.getColor(this, R.color.glow_temp);
-        if (menuTag.equals("DASHBOARD")) {
-            imgDashboard.setImageTintList(ColorStateList.valueOf(activeColor));
-            txtDashboard.setTextColor(activeColor);
-        } else if (menuTag.equals("TANAMAN")) {
-            imgTanaman.setImageTintList(ColorStateList.valueOf(activeColor));
-            txtTanaman.setTextColor(activeColor);
-        } else if (menuTag.equals("LOG")) {
-            imgLog.setImageTintList(ColorStateList.valueOf(activeColor));
-            txtLog.setTextColor(activeColor);
-        } else if (menuTag.equals("PROFIL")) {
-            imgProfil.setImageTintList(ColorStateList.valueOf(activeColor));
-            txtProfil.setTextColor(activeColor);
-        }
+        txtDashboard.setTextColor(warnaDefault);
+        txtTanaman.setTextColor(warnaDefault);
+        txtMonitoring.setTextColor(warnaDefault);
+        txtLog.setTextColor(warnaDefault);
+
+        txtDashboard.setTypeface(null, Typeface.NORMAL);
+        txtTanaman.setTypeface(null, Typeface.NORMAL);
+        txtMonitoring.setTypeface(null, Typeface.NORMAL);
+        txtLog.setTypeface(null, Typeface.NORMAL);
     }
 
-    private void resetNavColors() {
-        int inactiveColor = ContextCompat.getColor(this, R.color.text_gray);
-
-        imgDashboard.setImageTintList(ColorStateList.valueOf(inactiveColor));
-        txtDashboard.setTextColor(inactiveColor);
-        imgTanaman.setImageTintList(ColorStateList.valueOf(inactiveColor));
-        txtTanaman.setTextColor(inactiveColor);
-        imgLog.setImageTintList(ColorStateList.valueOf(inactiveColor));
-        txtLog.setTextColor(inactiveColor);
-        imgProfil.setImageTintList(ColorStateList.valueOf(inactiveColor));
-        txtProfil.setTextColor(inactiveColor);
-    }
-
-    // ViewHolder untuk list ringkas horizontal di Dashboard Fragment
-    public static class DashTanamanViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvNama, tvDetail;
-        public ImageView imgTanaman;
-
-        public DashTanamanViewHolder(@NonNull View itemView) {
-            super(itemView);
-            tvNama = itemView.findViewById(R.id.tvNamaDash);
-            tvDetail = itemView.findViewById(R.id.tvDetailDash);
-            imgTanaman = itemView.findViewById(R.id.imgTanamanDash);
-        }
+    /**
+     * Fungsi Akses Luar (Triggered dari DashboardFragment tombol 'Lihat Semua')
+     */
+    public void pindahKeFragmentTanaman() {
+        pilihMenu("TANAMAN");
     }
 }

@@ -14,6 +14,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -43,8 +45,17 @@ public class TambahTanamanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tambah_tanaman);
 
-        // Inisialisasi Firebase
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Tanaman");
+        // MENGAMBIL UID USER YANG SEDANG LOGIN
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(this, "Sesi login berakhir, silakan login ulang.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+        String uid = currentUser.getUid();
+
+        // MENGARAHKAN DATABASE KE NODE UID USER TERSEBUT
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Tanaman").child(uid);
 
         // Binding View
         spNamaTanaman = findViewById(R.id.spNamaTanaman);
@@ -59,16 +70,13 @@ public class TambahTanamanActivity extends AppCompatActivity {
         presetMap = TanamanPreset.getPresets();
         calendar = Calendar.getInstance();
 
-        // Set Default Tanggal ke Hari Ini
         selectedTimestampMulai = calendar.getTimeInMillis();
         updateLabelTanggal();
 
-        // Setup Master Data ke Spinner
         ArrayList<String> listNamaPreset = new ArrayList<>(presetMap.keySet());
         ArrayAdapter<String> adapterNama = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listNamaPreset);
         spNamaTanaman.setAdapter(adapterNama);
 
-        // Listener saat Pilihan Tanaman Berubah
         spNamaTanaman.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -77,14 +85,13 @@ public class TambahTanamanActivity extends AppCompatActivity {
                 if (preset != null) {
                     tvTargetHari.setText(preset.targetHariPanen + " Hari");
                     tvPpmIdeal.setText(preset.ppmIdeal + " PPM");
-                    updateTahapOtomatis(); // Update teks fase otomatis
+                    updateTahapOtomatis();
                 }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        // Setup DatePicker Kalender
         DatePickerDialog.OnDateSetListener dateSetListener = (view, year, month, dayOfMonth) -> {
             calendar.set(Calendar.YEAR, year);
             calendar.set(Calendar.MONTH, month);
@@ -92,7 +99,7 @@ public class TambahTanamanActivity extends AppCompatActivity {
 
             selectedTimestampMulai = calendar.getTimeInMillis();
             updateLabelTanggal();
-            updateTahapOtomatis(); // Update teks fase ketika tanggal berubah
+            updateTahapOtomatis();
         };
 
         cardTanggal.setOnClickListener(v -> new DatePickerDialog(TambahTanamanActivity.this, dateSetListener,
@@ -100,7 +107,6 @@ public class TambahTanamanActivity extends AppCompatActivity {
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH)).show());
 
-        // Listener Tombol
         btnBack.setOnClickListener(v -> finish());
         btnSimpanTanaman.setOnClickListener(v -> simpanDataKeFirebase());
     }
@@ -137,7 +143,6 @@ public class TambahTanamanActivity extends AppCompatActivity {
     }
 
     private void simpanDataKeFirebase() {
-        // SAFETY CHECK 1: Pastikan ada tanaman yang dipilih di Spinner
         if (spNamaTanaman.getSelectedItem() == null) {
             Toast.makeText(this, "Pilih jenis tanaman terlebih dahulu!", Toast.LENGTH_SHORT).show();
             return;
@@ -146,20 +151,17 @@ public class TambahTanamanActivity extends AppCompatActivity {
         String nama = spNamaTanaman.getSelectedItem().toString();
         TanamanPreset preset = presetMap.get(nama);
 
-        // SAFETY CHECK 2: Pastikan data profil tanaman ada
         if (preset == null) {
-            Toast.makeText(this, "Data profil tanaman tidak ditemukan!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Data preset tidak ditemukan!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Kalkulasi Umur Tanaman
         long currentTimestamp = System.currentTimeMillis();
         long diffMillis = currentTimestamp - selectedTimestampMulai;
         int hariKe = (int) (diffMillis / (1000 * 60 * 60 * 24)) + 1;
 
         if (hariKe < 1) hariKe = 1;
 
-        // Logika Status Pertumbuhan
         String tahap;
         if (hariKe <= preset.batasSemai) {
             tahap = "Semai / Adaptasi";
@@ -169,13 +171,11 @@ public class TambahTanamanActivity extends AppCompatActivity {
             tahap = "Siap Panen";
         }
 
-        // Kalkulasi Timestamp Panen
         Calendar panenCal = Calendar.getInstance();
         panenCal.setTimeInMillis(selectedTimestampMulai);
         panenCal.add(Calendar.DAY_OF_YEAR, preset.targetHariPanen);
         long timestampPanen = panenCal.getTimeInMillis();
 
-        // Push ke Firebase
         HashMap<String, Object> tanamanMap = new HashMap<>();
         tanamanMap.put("nama", nama);
         tanamanMap.put("status", tahap);
@@ -187,7 +187,6 @@ public class TambahTanamanActivity extends AppCompatActivity {
         tanamanMap.put("timestampPanen", timestampPanen);
         tanamanMap.put("targetHari", preset.targetHariPanen);
 
-        // Mengganti tombol menjadi non-aktif sementara agar user tidak klik 2 kali
         btnSimpanTanaman.setEnabled(false);
         btnSimpanTanaman.setText("MENYIMPAN...");
 
